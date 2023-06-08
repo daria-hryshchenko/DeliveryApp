@@ -14,7 +14,14 @@ export const App = () => {
   const handleClick = item => {
     if (cart.indexOf(item) !== -1) return;
     setCart([...cart, item]);
-    console.log(cart);
+  };
+
+  const handleChange = (item, d) => {
+    let temp = Number(item.amount);
+    temp += d;
+    console.log(item.amount);
+
+    return temp;
   };
 
   return (
@@ -23,12 +30,16 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<HeaderNavigation />}>
             <Route index element={<ShopPage handleClick={handleClick} />} />
-            {/* <Route path="/shop" element={<Shops />}> */}
-            {/* <Route path="milkylife" element={<MilkyLife />} /> */}
-            {/* <Route path="candyplanet" element={<CandyPlanet />} /> */}
-            {/* <Route path="burgerclub" element={<BurgerClub />} /> */}
-            {/* </Route> */}
-            <Route path="/card" element={<CartPage cart={cart} />} />
+            <Route
+              path="/card"
+              element={
+                <CartPage
+                  cart={cart}
+                  setCart={setCart}
+                  handleChange={handleChange}
+                />
+              }
+            />
             <Route path="*" element={<div>Page not found </div>} />
           </Route>
         </Routes>

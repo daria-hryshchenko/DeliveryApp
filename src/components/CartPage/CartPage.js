@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Form, Label, Input, Button } from './CartPage.Styled';
 
-export default function CardPage({ cart }) {
+import { List, Item } from './../ShopPage/ShopPage.Styled';
+
+export default function CardPage({ cart, handleChange }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [price, setPrice] = useState(0);
+
+  const handlePrice = () => {
+    let ans = 0;
+    cart.map(item => (ans += Number(item.price)));
+    setPrice(ans);
+  };
+
+  useEffect(() => {
+    handlePrice();
+  });
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -49,23 +62,29 @@ export default function CardPage({ cart }) {
       <Input type="text" name="address" onChange={handleInputChange} required />
 
       <div>
-        {cart.map(({ _id, title, price, image }) => {
+        {cart.map(item => {
+          const { _id, title, price, image, amount } = item;
           return (
-            <div key={_id}>
-              <ul key={_id}>
-                <li>
-                  <img
-                    src={`https://deliveryapp-vmua.onrender.com${image}`}
-                    alt={title}
-                  />
-                </li>
-                <li>{title}</li>
-                <li>Price: ${price}</li>
-              </ul>
-            </div>
+            <List key={item._id}>
+              <Item>
+                <img
+                  src={`https://deliveryapp-vmua.onrender.com${item.image}`}
+                  alt={item.title}
+                />
+              </Item>
+              <Item>{item.title}</Item>
+              <Item>Price: ${item.price}</Item>
+              <div>
+                <button onClick={() => handleChange(item, 1)}>+</button>
+                <button>{item.amount}</button>
+                <button onClick={() => handleChange(item, -1)}>-</button>
+              </div>
+            </List>
           );
         })}
       </div>
+
+      <div>Total price: {price}</div>
       <Button type="submit">Submit</Button>
     </Form>
   );
