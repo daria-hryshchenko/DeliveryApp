@@ -63,7 +63,6 @@ export default function CardPage({ cart, handleChange }) {
 
       <div>
         {cart.map(item => {
-          const { _id, title, price, image, amount } = item;
           return (
             <List key={item._id}>
               <Item>
